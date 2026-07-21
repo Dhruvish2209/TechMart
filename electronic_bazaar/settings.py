@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'store',
     'carts',
     'orders',
+    'cloudinary_storage',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -91,10 +93,20 @@ AUTH_USER_MODEL = 'accounts.Account'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
-    "default": dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600
+    "default": dj_database_url.parse(
+        config(
+            "DATABASE_URL",
+            default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+        ),
+        conn_max_age=600,
     )
 }
 
@@ -139,7 +151,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATIC_ROOT = BASE_DIR /'static'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 # STATICFILES_DIRS = ['electronic_bazaar/static,']
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "electronic_bazaar", 'static'),
@@ -157,12 +169,21 @@ MESSAGE_TAGS = {
 }
 
 #SMTP CONFIGURATION
-EMAIL_BACKEND = config('EMAIL_BACKEND')
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_PORT = config('EMAIL_PORT', cast=int)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_BACKEND = config("EMAIL_BACKEND")
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_PORT = config("EMAIL_PORT", cast=int)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 
-RAZORPAY_KEY_ID = 'rzp_test_lsA1yjpo9ZaC8g'
-RAZORPAY_KEY_SECRET = 'wcV6S16jQ4sNtlTzBXRSqxpq'
+
+RAZORPAY_KEY_ID = config("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = config("RAZORPAY_KEY_SECRET")
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': config('CLOUDINARY_API_KEY'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
