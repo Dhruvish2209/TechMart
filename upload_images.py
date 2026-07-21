@@ -33,4 +33,4 @@ for root, dirs, files in os.walk(MEDIA_FOLDER):
                 overwrite=True,
             )
 
-print("\n✅ All images uploaded successfully!")
+print("\nAll images uploaded successfully!")

@@ -14,4 +14,4 @@ with open("data.json", "w", encoding="utf-8") as f:
         stdout=f,
     )
 
-print("✅ data.json created successfully!")
+print("data.json created successfully!")
